@@ -23,8 +23,8 @@ jobs:
           REGISTRY_URI: ${{secrets.REGISTRY_URI}}
           DOCKER_PROJECT: cca
           IMAGE_NAME: crypto-exchange
-          DOCKER_IMAGE_PATH: Dockerfile
-          DOCKER_BUILD_CONTEXT: '.'
+          DOCKER_IMAGE_PATH: 'exchange-rate/Dockerfile'
+          DOCKER_BUILD_CONTEXT: 'exchange-rate/.'
           GITHUB_EVENT: ${{ github.event_name }}
           GITHUB_PR_NUMBER: ${{ github.event.number }}
           GITHUB_PR_BASE_BRANCH: ${{ github.base_ref }}
