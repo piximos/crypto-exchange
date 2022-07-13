@@ -17,6 +17,6 @@ runs:
   using: docker
   image: Dockerfile
   env:
-    INPUT_FILE: '${{ inputs.verbose }}'
-    OUTPUT_FILE: '${{ inputs.major-identifier }}'
-    PACKAGE_JSON_PATH: '${{ inputs.minor-identifier }}'
+    INPUT_FILE: '${{ inputs.input-file }}'
+    OUTPUT_FILE: '${{ inputs.output-file }}'
+    PACKAGE_JSON_PATH: '${{ inputs.package-json-path }}'

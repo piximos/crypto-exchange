@@ -2,7 +2,7 @@ FROM alpine
 
 RUN apk update &&\
     apk upgrade &&\
-    apk add --no-cache jq &&\
+    apk add --no-cache bash jq &&\
     rm -rf /var/cache/apk/*
 
 COPY ./script.sh /entrypoint.sh

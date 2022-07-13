@@ -18,14 +18,14 @@ jobs:
           output: 'vulnerabilities-report.json'
           severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
           exit-code: '0'
+          skip-dirs: 'node_modules'
           scan-ref: './exchange-rates/'
-      - name: generate semantic version
+      - name: Parse and format scan report
         id: semver
         uses: ./.custon-ci-actions/trivy-scan-report-parser/
         with:
-          sub-path: 'exchange-rates'
           input-file: 'vulnerabilities-report.json'
-          output-file: './pr-feedback.md'
+          output-file: 'pr-feedback.md'
           package-json-path: 'exchange-rates/package.json'
       - name: Comment vulnerabilities on PR
         if: always()
@@ -33,5 +33,5 @@ jobs:
         with:
           header: These following vulnerabilities were found
           recreate: true
-          path: './pr-feedback.md'
+          path: 'pr-feedback.md'
 
