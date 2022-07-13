@@ -100,7 +100,9 @@ helm package "${CHART_ROOT}"
 [ $? -eq 0 ] || exit_with_error_message "Chart packaging failed. Aborting." 7
 
 echo "Adding pushing chart."
-helm cm-push "${CHART_ROOT}" library
+chart_name="$(yq eval ".name" "${CHART_ROOT}/Chart.yaml")"
+chart_tgz="${chart_name}-${target_tag}.tgz"
+curl -u"${HELM_USER}:${HELM_PASSWORD}" -T "${chart_tgz}" "https://piximos.jfrog.io/artifactory/piximos-helm/${chart_name}/${chart_tgz}"
 [ $? -eq 0 ] || exit_with_error_message "Failed to push chart. Aborting." 8
 
 exit 0
