@@ -56,13 +56,35 @@ jobs:
         run: ./.github/.scripts/docker-build.sh
         env:
           DOCKER_BUILDKIT: 1
-          IMAGE_NAME: "${{ steps.naming.output.image_name }}"
-          IMAGE_TAG: "${{ steps.naming.output.image_tag }}"
+          IMAGE_NAME: "${{ steps.naming.outputs.image_name }}"
+          IMAGE_TAG: "${{ steps.naming.outputs.image_tag }}"
           DOCKER_IMAGE_PATH: 'exchange-rates/Dockerfile'
           DOCKER_BUILD_CONTEXT: 'exchange-rates/.'
+      - name: Scan app vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ steps.naming.outputs.image_name }}:${{ steps.naming.outputs.image_tag }}'
+          ignore-unfixed: true
+          format: 'json'
+          output: 'vulnerabilities-report.json'
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+          exit-code: '0'
+      - name: Parse and format scan report
+        uses: ./.custon-ci-actions/trivy-scan-report-parser/
+        with:
+          input-file: 'vulnerabilities-report.json'
+          output-file: 'pr-feedback.md'
+          package-json-path: 'exchange-rates/package.json'
+      - name: Comment vulnerabilities on PR
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: These following vulnerabilities were found
+          recreate: true
+          path: 'pr-feedback.md'
       - name: Cleanup
         env:
-          IMAGE_NAME: "${{ steps.naming.output.image_name }}"
-          IMAGE_TAG: "${{ steps.naming.output.image_tag }}"
+          IMAGE_NAME: "${{ steps.naming.outputs.image_name }}"
+          IMAGE_TAG: "${{ steps.naming.outputs.image_tag }}"
         run: |
           docker rmi "${IMAGE_NAME}:${IMAGE_TAG}" || true

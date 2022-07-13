@@ -28,7 +28,7 @@ while read -r entry; do
 done < <(jq '.Results[].Vulnerabilities | if . == null then . else .[] end' -c "${INPUT_FILE}")
 
 if [[ -n "${PACKAGE_JSON_PATH}" && (-n "${output_direct}" || -n "${output_indirect}") ]]; then
-  echo "# :warning: These following vulnerabilities were found" >"${OUTPUT_FILE}"
+  echo "# :warning: These following vulnerabilities were found in your app" >"${OUTPUT_FILE}"
   if [ "${output_direct}" ]; then
     echo -e "## List of **_direct_** dependencies with vulnerabilities \n ${table_header} ${output_direct}" >>"${OUTPUT_FILE}"
   fi
@@ -36,7 +36,7 @@ if [[ -n "${PACKAGE_JSON_PATH}" && (-n "${output_direct}" || -n "${output_indire
     echo -e "## List of **_indirect_** dependencies with vulnerabilities \n ${table_header} ${output_indirect}" >>"${OUTPUT_FILE}"
   fi
 elif [[ -z "${PACKAGE_JSON_PATH}" && -n "${output_direct}" ]]; then
-  echo "# :warning: These following vulnerabilities were found" >"${OUTPUT_FILE}"
+  echo "# :warning: These following vulnerabilities were found in your docker image" >"${OUTPUT_FILE}"
   echo -e "## List of dependencies with vulnerabilities \n ${table_header} ${output_direct}" >>"${OUTPUT_FILE}"
 else
   echo "# :white_check_mark: Congratulations! No vulnerabilities were found" >"${OUTPUT_FILE}"

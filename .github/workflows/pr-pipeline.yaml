@@ -21,7 +21,6 @@ jobs:
           skip-dirs: 'node_modules'
           scan-ref: './exchange-rates/'
       - name: Parse and format scan report
-        id: semver
         uses: ./.custon-ci-actions/trivy-scan-report-parser/
         with:
           input-file: 'vulnerabilities-report.json'
