@@ -1,0 +1,22 @@
+name: Vulnerabilities report parser
+description: Parses vulnerability reports
+inputs:
+  input-file:
+    description: Path of the scan report json
+    required: true
+  output-file:
+    description: Path of the report output
+    required: true
+  package-json-path:
+    description: Path of package.json to cross-reference vulnerabilities with (if scan type is fs)
+    required: false
+outputs:
+  semver:
+    description: generated semver
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    INPUT_FILE: '${{ inputs.verbose }}'
+    OUTPUT_FILE: '${{ inputs.major-identifier }}'
+    PACKAGE_JSON_PATH: '${{ inputs.minor-identifier }}'
