@@ -1,43 +1,19 @@
 #!/bin/bash
 
-IMAGE="${REGISTRY_URI}/${DOCKER_PROJECT}/${IMAGE_NAME}"
-GITHUB_COMMIT_HASH=${GITHUB_SHA:0:8}
-
-VERBOSE_BUILD="true"
-if [[ -z ${GITHUB_PR_NUMBER} ]]; then
-  VERBOSE_BUILD="false"
-fi
-
 build_image() {
-  img_tag="${1}"
-  echo "Building '${img_tag}' tag."
+  echo "Building '${IMAGE_TAG}' tag."
   docker build \
-    --build-arg SA_BASE_VERSION="${img_tag}" \
-    -t "${IMAGE}:${img_tag}" \
+    -t "${IMAGE_NAME}:${IMAGE_TAG}" \
     -f "${DOCKER_IMAGE_PATH}" "${DOCKER_BUILD_CONTEXT}"
 }
 
 push_image() {
-  img_tag="${1}"
-  echo "Pushing '${img_tag}' tag."
-  docker push "${IMAGE}:${img_tag}"
+  echo "Pushing '${IMAGE_TAG}' tag."
+  docker push "${IMAGE_NAME}:${IMAGE_TAG}"
   echo "Pushed public image : ${IMAGE_NAME}"
 }
 
-clean_up() {
-  echo "Deleting '${img_tag}' from local."
-  img_tag="${1}"
-  docker rmi "${IMAGE}:${img_tag}" || true
-}
-
-if [[ -z ${GITHUB_PR_NUMBER} ]]; then
-  IMAGE_TAG="${SEMVER_TAG}-${GITHUB_COMMIT_HASH}"
-else
-  IMAGE_TAG="pr-${GITHUB_PR_NUMBER}-${GITHUB_PR_BASE_BRANCH}-${GITHUB_COMMIT_HASH}"
-fi
-
-build_image "${IMAGE_TAG}"
+build_image
 [ $? -eq 0 ] || exit 1
-push_image "${IMAGE_TAG}"
+push_image
 [ $? -eq 0 ] || exit 2
-clean_up "${IMAGE_TAG}"
