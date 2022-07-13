@@ -9,9 +9,7 @@ on:
 jobs:
   build:
     name: Pull, Build, and Publish
-    runs-on:
-      - self-hosted
-      - cca-backbone
+    runs-on: ubuntu-latest
     steps:
       - name: Authenticate with registry
         run: |
@@ -22,7 +20,6 @@ jobs:
         run: ./.github/.scripts/docker-build.sh
         env:
           DOCKER_BUILDKIT: 1
-          // docker.io
           REGISTRY_URI: ${{secrets.REGISTRY_URI}}
           DOCKER_PROJECT: cca
           IMAGE_NAME: crypto-exchange
