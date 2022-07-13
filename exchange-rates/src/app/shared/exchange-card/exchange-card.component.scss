@@ -1,0 +1,22 @@
+.wrapper{
+    padding: .5em;
+    .exchange-card{
+        padding: .5em;
+        border-radius: .5em;
+        background-color: #a1a1a1;
+    }
+    .header{
+        .label{
+            background-color: #ade653;
+            font-size: .8em;
+            padding: .1em .2em;
+            margin: auto .2em;
+            border-radius: .5em;
+        }
+    }
+    .content{
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+}

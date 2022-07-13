@@ -1,0 +1,35 @@
+name: Build docker image
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - stable
+
+jobs:
+  build:
+    name: Pull, Build, and Publish
+    runs-on:
+      - self-hosted
+      - cca-backbone
+    steps:
+      - name: Authenticate with registry
+        run: |
+          echo "${{secrets.REGISTRY_PASSWORD}}" | docker login -u "${{secrets.REGISTRY_USER}}" ${{secrets.REGISTRY_URI}} --password-stdin
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Package and publish
+        run: ./.github/.scripts/docker-build.sh
+        env:
+          DOCKER_BUILDKIT: 1
+          // docker.io
+          REGISTRY_URI: ${{secrets.REGISTRY_URI}}
+          DOCKER_PROJECT: cca
+          IMAGE_NAME: crypto-exchange
+          DOCKER_IMAGE_PATH: Dockerfile
+          DOCKER_BUILD_CONTEXT: '.'
+          GITHUB_EVENT: ${{ github.event_name }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+          GITHUB_PR_BASE_BRANCH: ${{ github.base_ref }}
+          GITHUB_BRANCH: ${{ github.ref }}
+          BUILD_HEAP_SIZE: ${{secrets.BUILD_HEAP_SIZE}}

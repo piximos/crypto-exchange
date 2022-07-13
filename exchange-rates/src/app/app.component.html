@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row p-5">
+    <div class="btn btn-success" (click)="getCurrentExchangeRate()">
+      refresh
+    </div>
+
+    <!-- <div *ngFor="let unit of rates | keyvalue" class="col-2 col-md-3"></div> -->
+    <app-exchange-card *ngFor="let unit of rates | keyvalue" 
+      [name]="unit.value.name" 
+      [abreviation]="unit.key" 
+      [type]="unit.value.type" 
+      [unit]="unit.value.unit" 
+      [exchangeValue]="unit.value.value"
+      class="col-2 col-md-3"></app-exchange-card>
+  </div>
+</div>
