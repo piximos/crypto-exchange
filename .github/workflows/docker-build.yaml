@@ -1,11 +1,17 @@
 name: Build docker image
 on:
   push:
+    paths:
+      - exchange-rates/**
+      - .github/**
     branches:
       - main
       - staging
       - stable
   pull_request:
+    paths:
+      - exchange-rates/**
+      - .github/**
     branches:
       - main
       - staging
@@ -13,7 +19,7 @@ on:
 
 jobs:
   build:
-    name: Pull, Build, and Publish
+    name: build
     runs-on: ubuntu-latest
     steps:
       - name: Authenticate with registry
@@ -21,6 +27,11 @@ jobs:
           echo "${{secrets.REGISTRY_PASSWORD}}" | docker login -u "${{secrets.REGISTRY_USER}}" ${{secrets.REGISTRY_URI}} --password-stdin
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: generate semantic version
+        id: semver
+        uses: ./.custon-ci-actions/semver-tag-generator/
+        with:
+          sub-path: 'exchange-rates'
       - name: Package and publish
         run: ./.github/.scripts/docker-build.sh
         env:
@@ -34,4 +45,5 @@ jobs:
           GITHUB_PR_NUMBER: ${{ github.event.number }}
           GITHUB_PR_BASE_BRANCH: ${{ github.base_ref }}
           GITHUB_BRANCH: ${{ github.ref }}
+          SEMVER_TAG: ${{ steps.semver.outputs.semver }}
           BUILD_HEAP_SIZE: ${{secrets.BUILD_HEAP_SIZE}}

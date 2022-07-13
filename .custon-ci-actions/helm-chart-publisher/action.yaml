@@ -1,0 +1,57 @@
+name: Helm chart publisher
+description: Tests, packages, and publishes helm charts
+inputs:
+  version-path:
+    default: '.version'
+    description: The path for the version you want to bump inside your 'Chart.yml'
+    required: false
+  chart-mount-root:
+    required: false
+    default: /sa-chart
+    description: The path into which you have mounted your project into
+  chart-root:
+    required: true
+    description: The directory of your chart root under 'CHART_MOUNT_ROOT (chart-mount-root)'
+    default: '${GITHUB_WORKSPACE}'
+  helm-registry:
+    description: The path for your Helm Registry
+    required: true
+  helm-user:
+    description: The user of your Helm Registry
+    required: true
+  helm-password:
+    description: The password for your Helm Registry
+    required: true
+  conserve-current-tag:
+    description: Whether to conserve the current tag or not.
+    required: false
+  override-tag:
+    description: The value with which you want to override the tag. Required if 'BUMP_TYPE (bump-type)' is not set.
+    required: false
+  bump-type:
+    description: The type of bump to perform. Required if 'OVERRIDE_TAG (override-tag)' is not set.
+    required: false
+  tag-suffix:
+    description: A suffix to the SemVer tag
+    required: false
+    default: ''
+  verbose:
+    description: Verbosity
+    default: 'false'
+    required: false
+
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    VERSION_PATH: '${{ inputs.version-path }}'
+    CHART_MOUNT_ROOT: '${{ inputs.chart-mount-root }}'
+    CHART_ROOT: '${{ inputs.chart-root }}'
+    HELM_REGISTRY: '${{ inputs.helm-registry }}'
+    HELM_USER: '${{ inputs.helm-user }}'
+    HELM_PASSWORD: '${{ inputs.helm-password }}'
+    CONSERVE_CURRENT_TAG: '${{ inputs.conserve-current-tag }}'
+    OVERRIDE_TAG: '${{ inputs.override-tag }}'
+    BUMP_TYPE: '${{ inputs.bump-type }}'
+    TAG_SUFFIX: '${{ inputs.tag-suffix }}'
+    VERBOSE: '${{ inputs.verbose }}'
