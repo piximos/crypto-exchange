@@ -39,7 +39,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
           REGISTRY_URI: ${{secrets.REGISTRY_URI}}
-          DOCKER_PROJECT: cca
+          DOCKER_PROJECT: piximos
           IMAGE_NAME: crypto-exchange
           DOCKER_IMAGE_PATH: 'exchange-rates/Dockerfile'
           DOCKER_BUILD_CONTEXT: 'exchange-rates/.'
