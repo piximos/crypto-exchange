@@ -40,5 +40,5 @@ jobs:
           helm-registry: '${{secrets.HELM_REGISTRY_URL}}'
           helm-user: '${{secrets.HELM_REGISTRY_USERNAME}}'
           helm-password: '${{secrets.HELM_REGISTRY_PASSWORD}}'
-          override-tag: "${{ github.event_name == 'pull_request' && format('{1}-pr-{0}', github.event.number, steps.semver.outputs.semver) || steps.semver.outputs.semver }}"
+          override-tag: "${{ github.event_name == 'pull_request' && format('{0}-pr-{1}-{2}', steps.semver.outputs.semver, github.event.number, github.sha) || steps.semver.outputs.semver }}"
 
