@@ -7,12 +7,12 @@ inputs:
     required: false
   chart-mount-root:
     required: false
-    default: /sa-chart
+    default: '${GITHUB_WORKSPACE}'
     description: The path into which you have mounted your project into
   chart-root:
     required: true
     description: The directory of your chart root under 'CHART_MOUNT_ROOT (chart-mount-root)'
-    default: '${GITHUB_WORKSPACE}'
+    default: '.'
   helm-registry:
     description: The path for your Helm Registry
     required: true
