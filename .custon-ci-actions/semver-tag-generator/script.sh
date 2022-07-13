@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+git config --global --add safe.directory /github/workspace
+
 set -eu
 
 if [ "${VERBOSE}" = "true" ]; then
