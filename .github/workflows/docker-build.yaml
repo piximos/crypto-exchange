@@ -5,6 +5,11 @@ on:
       - main
       - staging
       - stable
+  pull_request:
+    branches:
+      - main
+      - staging
+      - stable
 
 jobs:
   build:
