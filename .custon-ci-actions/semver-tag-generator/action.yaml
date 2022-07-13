@@ -1,0 +1,34 @@
+name: Semver tag generator
+description: Generates a semantic version
+inputs:
+  version-path:
+    default: '.version'
+    description: The path for the version you want to bump inside your 'Chart.yml'
+    required: false
+  verbose:
+    default: 'true'
+    description: Defines the verbosity level
+    required: false
+  major-identifier:
+    default: '^breaking'
+    description: Major changes commit regex
+    required: false
+  minor-identifier:
+    default: '^feat'
+    description: Minor changes commit regex
+    required: false
+  sub-path:
+    default: '.'
+    description: Sub path to lookup changes into
+    required: false
+outputs:
+  semver:
+    description: generated semver
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    VERBOSE: '${{ inputs.verbose }}'
+    MAJOR_IDENTIFIER: '${{ inputs.major-identifier }}'
+    MINOR_IDENTIFIER: '${{ inputs.minor-identifier }}'
+    SUB_PATH: '${{ inputs.sub-path }}'

@@ -3,7 +3,7 @@
 IMAGE="${REGISTRY_URI}/${DOCKER_PROJECT}/${IMAGE_NAME}"
 GITHUB_COMMIT_HASH=${GITHUB_SHA:0:8}
 
-  VERBOSE_BUILD="true"
+VERBOSE_BUILD="true"
 if [[ -z ${GITHUB_PR_NUMBER} ]]; then
   VERBOSE_BUILD="false"
 fi
@@ -14,10 +14,7 @@ build_image() {
   docker build \
     --build-arg SA_BASE_VERSION="${img_tag}" \
     -t "${IMAGE}:${img_tag}" \
-    -f "${DOCKER_IMAGE_PATH}" "${DOCKER_BUILD_CONTEXT}" \
-    --build-arg VERBOSE_BUILD="${VERBOSE_BUILD}" \
-    --build-arg ANGULAR_BUILD_HEAP_SIZE="${BUILD_HEAP_SIZE}" \
-    --progress plain
+    -f "${DOCKER_IMAGE_PATH}" "${DOCKER_BUILD_CONTEXT}"
 }
 
 push_image() {
@@ -34,7 +31,7 @@ clean_up() {
 }
 
 if [[ -z ${GITHUB_PR_NUMBER} ]]; then
-  IMAGE_TAG="${GITHUB_BRANCH#refs/heads/}-${GITHUB_COMMIT_HASH}"
+  IMAGE_TAG="${SEMVER_TAG}-${GITHUB_COMMIT_HASH}"
 else
   IMAGE_TAG="pr-${GITHUB_PR_NUMBER}-${GITHUB_PR_BASE_BRANCH}-${GITHUB_COMMIT_HASH}"
 fi
