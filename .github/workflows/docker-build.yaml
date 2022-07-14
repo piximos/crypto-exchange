@@ -44,8 +44,8 @@ jobs:
         run: |
           IMAGE="${{secrets.REGISTRY_URI}}/${DOCKER_PROJECT}/${IMAGE_NAME}"
           
-          if [[ -z ${{ github.event.number }} ]]; then
-            IMAGE_TAG="${{ steps.semver.outputs.semver }}-${GITHUB_BRANCH#refs/heads/}"
+          if [ -z "${{ github.event.number }}" ]; then
+            IMAGE_TAG="${{ steps.semver.outputs.semver }}-${GITHUB_REF##*/}"
           else
             IMAGE_TAG="pr-${{ github.event.number }}-${{ github.base_ref }}-${GITHUB_SHA:0:8}"
           fi
