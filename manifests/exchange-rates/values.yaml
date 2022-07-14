@@ -4,7 +4,7 @@ exchange-rates:
   image:
     registry: docker.io
     repository: piximos/crypto-exchange
-    tag: "0.2.0-main"
+    tag: "0.2.1"
     pullPolicy: Always
 
   appConfigs:
@@ -24,6 +24,21 @@ exchange-rates:
   podSecurityContext: {}
 
   securityContext: {}
+
+  ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP
+
+  probes:
+    liveness:
+      httpGet:
+        path: /
+        port: http
+    readiness:
+      httpGet:
+        path: /
+        port: http
 
   service:
     type: ClusterIP

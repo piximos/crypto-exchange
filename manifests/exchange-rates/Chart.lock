@@ -1,6 +1,6 @@
 dependencies:
 - name: exchange-rates
   repository: https://piximos.jfrog.io/artifactory/api/helm/piximos-helm
-  version: 0.2.0
-digest: sha256:441c510870452ab436f3234245764752d11df98c9a5792d3ba12798ddf843738
-generated: "2022-07-14T10:59:49.314127294+01:00"
+  version: 0.2.1
+digest: sha256:cce4f6fc79365f4bb4c5dac5990877f23bc41852663a8feb838a35a7a73c1835
+generated: "2022-07-14T11:46:15.791658574+01:00"
