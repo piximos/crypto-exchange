@@ -1,0 +1,10 @@
+apiVersion: v2
+name: exchange-rates
+description: Deployment values for the exchange rates app
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: exchange-rates
+    version: 0.1.0
+    repository: "https://piximos.jfrog.io/artifactory/api/helm/piximos-helm"

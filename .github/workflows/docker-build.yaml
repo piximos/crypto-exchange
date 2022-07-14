@@ -45,7 +45,7 @@ jobs:
           IMAGE="${{secrets.REGISTRY_URI}}/${DOCKER_PROJECT}/${IMAGE_NAME}"
           
           if [[ -z ${{ github.event.number }} ]]; then
-            IMAGE_TAG="${{ steps.semver.outputs.semver }}-${GITHUB_SHA:0:8}"
+            IMAGE_TAG="${{ steps.semver.outputs.semver }}-${GITHUB_BRANCH#refs/heads/}"
           else
             IMAGE_TAG="pr-${{ github.event.number }}-${{ github.base_ref }}-${GITHUB_SHA:0:8}"
           fi
@@ -61,7 +61,7 @@ jobs:
           DOCKER_IMAGE_PATH: 'exchange-rates/Dockerfile'
           DOCKER_BUILD_CONTEXT: 'exchange-rates/.'
       - name: Scan app vulnerabilities
-        if: github.event_name == "pull_request"
+        if: ${{ github.event_name }} == "pull_request"
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: '${{ steps.naming.outputs.image_name }}:${{ steps.naming.outputs.image_tag }}'
@@ -71,7 +71,7 @@ jobs:
           severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
           exit-code: '0'
       - name: Parse and format scan report
-        if: github.event_name == "pull_request"
+        if: ${{ github.event_name }} == "pull_request"
         uses: ./.custon-ci-actions/trivy-scan-report-parser/
         with:
           input-file: 'vulnerabilities-report.json'

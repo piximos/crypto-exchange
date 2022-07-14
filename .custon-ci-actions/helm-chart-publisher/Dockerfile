@@ -13,7 +13,6 @@ RUN apk update \
     && apk add --no-cache bash wget curl\
     && wget "$(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep -v '.tar.gz' | grep linux_amd64 | cut -d '"' -f 4)" -O /usr/bin/yq \
     && chmod +x /usr/bin/yq \
-    && helm plugin install https://github.com/chartmuseum/helm-push \
     && rm -rf /var/cache/apk/*
 
 WORKDIR ${CHART_MOUNT_ROOT}

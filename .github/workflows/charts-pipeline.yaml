@@ -1,0 +1,44 @@
+name: charts
+on:
+  push:
+    paths:
+      - charts/**
+      - .github/**
+      - .custon-ci-actions/**
+    branches:
+      - main
+      - staging
+      - stable
+  pull_request:
+    paths:
+      - charts/**
+      - .github/**
+      - .custon-ci-actions/**
+    branches:
+      - main
+      - staging
+      - stable
+
+jobs:
+  scan-vulnerabilities:
+    name: Publish charts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Generate semantic version
+        id: semver
+        uses: ./.custon-ci-actions/semver-tag-generator/
+        with:
+          sub-path: 'charts/exchange-rates'
+      - name: Lint, package, and publish chart
+        uses: ./.custon-ci-actions/helm-chart-publisher/
+        with:
+          chart-root: 'charts/exchange-rates'
+          helm-registry: '${{secrets.HELM_REGISTRY_URL}}'
+          helm-user: '${{secrets.HELM_REGISTRY_USERNAME}}'
+          helm-password: '${{secrets.HELM_REGISTRY_PASSWORD}}'
+          override-tag: "${{ github.event_name == 'pull_request' && format('{0}-pr-{1}-{2}', steps.semver.outputs.semver, github.event.number, github.sha) || steps.semver.outputs.semver }}"
+
