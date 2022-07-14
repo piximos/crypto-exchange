@@ -1,7 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 /charts/**/charts
+/manifests/**/charts
 /charts/**/*.tgz
+/manifests/**/*.tgz
 
 # Compiled output
 /**/dist
@@ -32,6 +34,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
+exchange-rates/src/environments/environment.ts
 /**/.angular/cache
 /**.sass-cache/
 /**/connect.lock
