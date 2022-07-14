@@ -11,14 +11,9 @@ The following environment variables are used to configure the application:
   - _Description:_ The path for the version you want to bump inside your `Chart.yml`.
   - _Required:_ No
   - _Default:_ `.version`
-- `CHART_MOUNT_ROOT`:
-  - _Type:_ String
-  - _Description:_ The path into which you have mounted your project into.
-  - _Required:_ Yes
-  - _Default:_ `/sa-chart`
 - `CHART_ROOT`:
   - _Type:_ String
-  - _Description:_ The directory of your chart root under `CHART_MOUNT_ROOT`
+  - _Description:_ The directory of your chart
   - _Required:_ Yes
 - `HELM_REGISTRY`:
   - _Type:_ String
