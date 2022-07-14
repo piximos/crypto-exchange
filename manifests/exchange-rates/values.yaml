@@ -2,9 +2,10 @@ exchange-rates:
   replicaCount: 1
 
   image:
+    registry: docker.io
     repository: piximos/crypto-exchange
+    tag: "0.1.0-58f33e63"
     pullPolicy: always
-    tag: ""
 
   appConfigs:
     CONF_EXCHANGE_RATE_API: 'https://api.coingecko.com/api/v3/exchange_rates'
