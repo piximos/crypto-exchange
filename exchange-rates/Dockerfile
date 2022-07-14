@@ -29,14 +29,18 @@ RUN apk update \
  && apk upgrade \
  && rm -rf /var/cache/apk/*
 
+ENV TARGET_USER=101
+ENV TARGET_GROUP=101
 ARG USE_FOR_APP_ROOT_ON_BUILD="/ng-app"
 ARG TARGET_UNDER_DIST="exchange-rates"
 ENV APP_ROOT="/usr/share/nginx/html"
 
-RUN rm -rf /usr/share/nginx/html/*
+RUN rm -rf "${APP_ROOT}/*";\
+    chown -R "${TARGET_USER}:${TARGET_GROUP}" "${APP_ROOT}";\
+    chown -R "${TARGET_USER}:${TARGET_GROUP}" "/var/cache/nginx"
 
-COPY --from=builder ${USE_FOR_APP_ROOT_ON_BUILD}/dist/${TARGET_UNDER_DIST} ${APP_ROOT}
-COPY docker/entrypoint.sh /entrypoint.sh
+COPY --chown="${TARGET_USER}:${TARGET_GROUP}" --from=builder ${USE_FOR_APP_ROOT_ON_BUILD}/dist/${TARGET_UNDER_DIST} ${APP_ROOT}
+COPY --chown="${TARGET_USER}:${TARGET_GROUP}" docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

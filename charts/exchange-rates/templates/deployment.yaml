@@ -38,17 +38,15 @@ spec:
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
+            {{- include "common.tplvalues.render" ( dict "value" .Values.ports "context" $ ) | nindent 12 }}
+          {{- if .Values.probes.liveness }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            {{- include "common.tplvalues.render" ( dict "value" .Values.probes.liveness "context" $ ) | nindent 12 }}
+          {{- end }}
+          {{- if .Values.probes.readiness }}
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            {{- include "common.tplvalues.render" ( dict "value" .Values.probes.readiness "context" $ ) | nindent 12 }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "common.names.fullname" . }}
