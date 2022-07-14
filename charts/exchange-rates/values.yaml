@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   registry: docker.io
   repository: piximos/crypto-exchange
-  pullPolicy: always
+  pullPolicy: Always
   tag: ""
 
 appConfigs:
@@ -20,17 +20,17 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext:
-  runAsUser: 1000
-  fsGroup: 2000
+podSecurityContext: {}
+#  runAsUser: 1000
+#  fsGroup: 2000
 
-securityContext:
-   capabilities:
-     drop:
-     - ALL
-   readOnlyRootFilesystem: true
-   runAsNonRoot: true
-   runAsUser: 1000
+securityContext: {}
+#   capabilities:
+#     drop:
+#     - ALL
+#   readOnlyRootFilesystem: true
+#   runAsNonRoot: true
+#   runAsUser: 1000
 
 service:
   type: ClusterIP
